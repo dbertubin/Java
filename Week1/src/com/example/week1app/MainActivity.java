@@ -44,7 +44,7 @@ import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.TextView;
 
-// TODO: Auto-generated Javadoc
+// TODO: 
 /**
  * The Class MainActivity.
  */
@@ -58,9 +58,6 @@ public class MainActivity extends Activity {
 	float total;
 	String inputError;
 	String inputPrompt;
-	
-	
-	String[]gradeArray = {"A","B","C","D","F"};
 	String fieldText;
 
     /* (non-Javadoc)
@@ -173,6 +170,9 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
+				/*
+				 * Required loop 
+				 */
 				for (int i : grades) {
 				sum += i;
 				
