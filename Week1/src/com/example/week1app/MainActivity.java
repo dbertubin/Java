@@ -56,6 +56,9 @@ public class MainActivity extends Activity {
 	int gradeValue; 
 	float sum;
 	float total;
+	String inputError;
+	String inputPrompt;
+	
 	
 	String[]gradeArray = {"A","B","C","D","F"};
 	String fieldText;
@@ -91,6 +94,9 @@ public class MainActivity extends Activity {
         /*
          * Instantiate the ArrayList and additional vars to store data
          */
+        inputError = new String(getString(R.string.inputError));
+        inputPrompt = new String(getString(R.string.inputPrompt));
+        
         grades = new ArrayList<Integer>();
         fieldText = new String();
         fieldText = et.getText().toString();
@@ -107,7 +113,7 @@ public class MainActivity extends Activity {
 				
 				if (et.getText().toString().length() ==0 || et.getText().toString().length() != 1){
 					et.setText("");
-					et.setHint("You must Type in a Letter Grade ex. A,B,C,D or F.");
+					et.setHint(inputError);
 		
 				} else {
 				
@@ -115,38 +121,38 @@ public class MainActivity extends Activity {
 					 gradeValue = 4;
 					 grades.add(gradeValue);
 					 et.setText("");
-				        et.setHint("Enter Letter Grade");
+				        et.setHint(inputPrompt);
 					}
 					
 					else if(et.getText().toString().toUpperCase().equals("B")){
 						 gradeValue = 3;
 						 grades.add(gradeValue);
 						 et.setText("");
-					        et.setHint("Enter Letter Grade");
+					        et.setHint(inputPrompt);
 						}
 					
 					else if(et.getText().toString().toUpperCase().equals("C")){
 						 gradeValue = 2;
 						 grades.add(gradeValue);
 						 et.setText("");
-					        et.setHint("Enter Letter Grade");
+					        et.setHint(inputPrompt);
 						}
 						
 					else if(et.getText().toString().toUpperCase().equals("D")){
 						 gradeValue = 1;
 						 grades.add(gradeValue);
 						 et.setText("");
-					        et.setHint("Enter Letter Grade");
+					        et.setHint(inputPrompt);
 						}
 					else if(et.getText().toString().toUpperCase().equals("F")){
 						 gradeValue = 0;
 						 grades.add(gradeValue);
 						 et.setText("");
-					        et.setHint("Enter Letter Grade");
+					        et.setHint(inputPrompt);
 						}
 					else {
 						et.setText("");
-						et.setHint("Please enter either A,B,C,D or F!");
+						et.setHint(inputError);
 					}
 					
 			        System.out.println(grades);
