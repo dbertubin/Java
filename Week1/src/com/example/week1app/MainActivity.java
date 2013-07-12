@@ -54,6 +54,8 @@ public class MainActivity extends Activity {
 	LinearLayout.LayoutParams lp;
 	ArrayList<Integer> grades;
 	int gradeValue; 
+	int sum;
+	float total;
 	
 	String[]gradeArray = {"A","B","C","D","F"};
 	String fieldText;
@@ -69,7 +71,7 @@ public class MainActivity extends Activity {
         ll = new LinearLayout(this);
         ll.setOrientation(LinearLayout.VERTICAL);
         lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT, LinearLayout.LayoutParams.WRAP_CONTENT);
-        ll.setLayoutParams(lp);
+//        ll.setLayoutParams(lp);
         
         TextView textView = new TextView(this);
         textView.setText("Calculate your GPA"); 
@@ -151,17 +153,44 @@ public class MainActivity extends Activity {
 			
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
+				for (int i : grades) {
+				sum += i;
+				
+				total = sum/grades.size();
+				
+				et.setText("Your GPA is "+ total);
+				
+				System.out.println(total);	
+				}
+				total =0;
+				sum = 0;
+			}
+		});
+        
+        Button clear = new Button(this);
+        clear.setText("Clear");
+        clear.setOnClickListener(new View.OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				grades.removeAll(grades);
+				sum= 0;
+				total=0;
+				System.out.println(grades);
+				et.setText("");
+				
 				
 			}
 		});
         
         LinearLayout form = new LinearLayout(this);
-        form.setOrientation(LinearLayout.HORIZONTAL);
+        form.setOrientation(LinearLayout.VERTICAL);
         form.setLayoutParams(lp);
         
         form.addView(textView);
         form.addView(b);
+        form.addView(calc);
+        form.addView(clear);
         
         ll.addView(form);
         
