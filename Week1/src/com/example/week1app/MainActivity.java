@@ -34,6 +34,7 @@ package com.example.week1app;
 import java.util.ArrayList;
 
 import android.os.Bundle;
+import android.annotation.SuppressLint;
 import android.app.Activity;
 //import android.text.Editable;
 //import android.util.Log;
@@ -48,6 +49,7 @@ import android.widget.TextView;
 /**
  * The Class MainActivity.
  */
+@SuppressLint("DefaultLocale")
 public class MainActivity extends Activity {
 
 	LinearLayout ll;
@@ -95,8 +97,6 @@ public class MainActivity extends Activity {
         inputPrompt = new String(getString(R.string.inputPrompt));
         
         grades = new ArrayList<Integer>();
-        fieldText = new String();
-        fieldText = et.getText().toString();
         
         /*
          * Button on click checks takes the text from the EditText Field and converts it to a string then checks the length to
@@ -105,10 +105,11 @@ public class MainActivity extends Activity {
          */
         b.setOnClickListener(new View.OnClickListener() {
 			
+			
 			@Override
 			public void onClick(View v) {
 				
-				if (et.getText().toString().length() ==0 || et.getText().toString().length() != 1){
+				if (et.getText().toString().length() == 0 || et.getText().toString().length() != 1){
 					et.setText("");
 					et.setHint(inputError);
 		
