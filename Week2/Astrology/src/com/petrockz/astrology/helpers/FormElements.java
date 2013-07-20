@@ -15,6 +15,14 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
 import android.widget.LinearLayout.LayoutParams;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
+import android.widget.TextView;
+
+import com.petrockz.astrology.helpers.FormElements;
+import com.petrockz.astrology.helpers.Signs;
+import com.petrockz.astrology.helpers.JsonHandler;
+
 
 // TODO: Auto-generated Javadoc
 /**
@@ -54,9 +62,49 @@ public class FormElements {
 		ll.addView(et);
 		ll.addView(b);
 		
-		
+
 		
 		return ll;
+		
 	}
 
+		
+		/**
+		 * Radio group options.
+		 *
+		 * @param context the context
+		 * @param location the location
+		 * @return the radio group
+		 */
+		public static RadioGroup radioGroupOptions(Context context, String[] signNames) {
+			RadioGroup radioGroup = new RadioGroup(context);
+
+			for (int i = 0; i < signNames.length; i++) {
+				RadioButton radioButton = new RadioButton(context);
+
+				radioButton.setText(signNames[i]);
+	            if (i==0){
+	            	radioButton.setChecked(true);
+				}
+	            radioButton.setId(i+1);
+	            radioGroup.addView(radioButton);
+			}
+
+			return radioGroup;
+		}
+		
+		/**
+		 * Show results.
+		 *
+		 * @param context the context
+		 * @return the text view
+		 */
+		public static TextView showResults(Context context) {
+			TextView textView = new TextView(context);
+			textView.setId(3);
+
+			return textView;
+		}
 }
+
+

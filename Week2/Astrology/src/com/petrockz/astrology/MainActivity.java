@@ -8,7 +8,6 @@
  * date 	Jul 18, 2013
  */
 package com.petrockz.astrology;
-
 import com.petrockz.astrology.helpers.FormElements;
 
 import android.os.Bundle;
@@ -19,7 +18,7 @@ import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.LinearLayout;
-
+ 
 // TODO: Auto-generated Javadoc
 /**
  * The Class MainActivity.
@@ -34,6 +33,7 @@ public class MainActivity extends Activity {
 		super.onCreate(savedInstanceState);
 		setContentView(R.layout.activity_main);
 		
+		//Parent Layout 
 		LinearLayout ll = new LinearLayout(this);
 		
 		LinearLayout editTextWithButton = FormElements.singleEntryWithButton(this, "Enter Name Here", "Send");
