@@ -19,8 +19,8 @@ public enum Signs {
 	PISCES(12,"Pisces"); 
 	
 
-	private final int signCount;
-	private final String signName;
+	private int signCount;
+	private String signName;
 	
 	
 	private Signs(int signCount, String signName) {
@@ -29,11 +29,11 @@ public enum Signs {
 		
 	}
 	
-	public int setSignCount(){
+	public int getSignCount(){
 		return signCount;
 	}
 
-	public String setSignName(){
+	public String getSignName(){
 		return signName;
 	}
 	

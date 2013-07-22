@@ -19,9 +19,7 @@ import android.widget.RadioButton;
 import android.widget.RadioGroup;
 import android.widget.TextView;
 
-import com.petrockz.astrology.helpers.FormElements;
-import com.petrockz.astrology.helpers.Signs;
-import com.petrockz.astrology.helpers.JsonHandler;
+
 
 
 // TODO: Auto-generated Javadoc
@@ -62,8 +60,6 @@ public class FormElements {
 		ll.addView(et);
 		ll.addView(b);
 		
-
-		
 		return ll;
 		
 	}
@@ -76,9 +72,10 @@ public class FormElements {
 		 * @param location the location
 		 * @return the radio group
 		 */
-		public static RadioGroup radioGroupOptions(Context context, String[] signNames) {
-			RadioGroup radioGroup = new RadioGroup(context);
 
+		public static RadioGroup radioGroupOptions(Context context, String[] signNames) {
+	
+			RadioGroup radioGroup = new RadioGroup(context);
 			for (int i = 0; i < signNames.length; i++) {
 				RadioButton radioButton = new RadioButton(context);
 
@@ -91,7 +88,19 @@ public class FormElements {
 			}
 
 			return radioGroup;
+	
 		}
+		
+		
+		public static Button singleButton(Context context, String buttonName){
+			
+			Button b = new Button(context);
+			b.setText(buttonName);
+			b.setId(1);
+		
+			return b; 
+		}
+		
 		
 		/**
 		 * Show results.

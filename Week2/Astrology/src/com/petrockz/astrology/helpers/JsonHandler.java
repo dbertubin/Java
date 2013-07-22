@@ -6,38 +6,39 @@ import com.petrockz.astrology.helpers.Signs;
 
 public class JsonHandler {
 
-	public class JSON {
 
-		//builds JSON mainObject 
-		public JSONObject buildJSON() {
 
-			JSONObject mainObject = new JSONObject();
+		//builds JSON signsObject 
+		public static JSONObject buildJSON() {
+
+			JSONObject signsObject = new JSONObject();
 			try {
-				JSONObject dataObject = new JSONObject();
+				JSONObject queryObject = new JSONObject();
 
-				// Create a temporary object
-				for (Signs items : Signs.values()) {
+				// Create a temporary object with for loop 
+				for (Signs sign : Signs.values()) {
+				
 					JSONObject tempObject = new JSONObject();
 
 					//Sets data into JSON temp object 
-					tempObject.put("signCount", items.setSignCount());
-					tempObject.put("signName", items.setSignName());
+//					tempObject.put("signCount", sign.getSignCount());
+					tempObject.put("signName", sign.getSignName());
 					
 					//Sets temp object into data object 
-					dataObject.put(items.name().toString(), tempObject);
+					queryObject.put(sign.name().toString(), tempObject);
 				}
 				
-				mainObject.put("data", dataObject);
+				signsObject.put("data", queryObject);
 
 			} catch (JSONException e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			return mainObject;
+			return signsObject;
 		}
 
-		//reads the json from the object
-		public String readJSON(String selected){
+		//reads the JSON from the object
+		public static String readJSON(String selected){
 			String result, signName;
 
 			JSONObject object = buildJSON();
@@ -55,7 +56,7 @@ public class JsonHandler {
 
 			return result;
 		}
-	}
+	
 	
 	
 }
