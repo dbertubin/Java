@@ -83,9 +83,7 @@ public class MainActivity extends Activity {
 				String selected = rb.getText().toString();
 				signText.setText("TEST");
 				Log.i("SELECTED", JsonHandler.readJSON(selected));
-				
-				
-				
+					
 			}
 		});
 		ll.addView(signGroup);
