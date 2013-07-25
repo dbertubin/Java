@@ -130,13 +130,18 @@ public class MainActivity extends Activity {
 		protected void onPostExecute(String result){
 			Log.i("URL RESPONSE", result);
 			try {
-				JSONObject json = new JSONObject(result);
-				JSONObject results = json.getJSONObject("value").getJSONObject("joke");
-				JSONObject resultsId = json.getJSONObject("value").getJSONObject("id");
-				_history.put(resultsId.toString(), json.toString());
-//				ReadWrite.storeObjectFile(_context, "history", _history, false);
-				ReadWrite.storeStringFile(_context, "temp", result.toString(),true);
 				
+				JSONObject json = new JSONObject(result);
+				JSONObject results = json.getJSONObject("value");
+				String joke = results.getString("joke");
+				String jokeId = results.getString("id");
+				Log.i("JSON RESULT", joke);
+				_history.put(jokeId, joke);
+				ReadWrite.storeObjectFile(_context, "history", _history, false);
+				
+				// Nexus does not have an SD card so logic to check that would have to go here before trying to write to it. 
+//				ReadWrite.storeStringFile(_context, "temp", result.toString(),true);
+								
 				
 			} catch (JSONException e) {
 				// TODO: handle exception

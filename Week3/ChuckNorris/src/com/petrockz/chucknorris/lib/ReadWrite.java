@@ -25,7 +25,7 @@ public class ReadWrite {
 			fos.write(content.getBytes());			
 		} catch (IOException e) {
 			// TODO: handle exception
-			Log.e("WRITE ERROR", fileName);
+			Log.e("WRITE ERROR", e.toString());
 		}
 		
 		return true;
@@ -47,6 +47,7 @@ public class ReadWrite {
 			}
 			oos = new ObjectOutputStream(fos);
 			oos.writeObject(content);
+			Log.i("CONTENT WRITTEN", content.toString());
 			oos.close();
 			fos.close();
 
