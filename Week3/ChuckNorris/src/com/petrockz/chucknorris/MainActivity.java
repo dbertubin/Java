@@ -2,7 +2,6 @@ package com.petrockz.chucknorris;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.net.URLEncoder;
 import java.util.HashMap;
 
 import org.json.JSONException;
@@ -16,57 +15,106 @@ import com.petrockz.chucknorris.lib.ReadWrite;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
-import android.widget.EditText;
 import android.widget.LinearLayout;
 
+// TODO: Auto-generated Javadoc
+/**
+ * The Class MainActivity.
+ */
 public class MainActivity extends Activity {
 
+	/** The _context. */
 	Context _context;
+	
+	/** The _app layout. */
 	LinearLayout _appLayout;
+	
+	/** The _get joke. */
 	GetJokeForm _getJoke;
+	
+	/** The _joke. */
 	JokeDisplay _joke;
+	
+	/** The _connected. */
 	Boolean _connected = false;
+	
+	/** The _history. */
 	HashMap<String, String> _history;
 	
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreate(android.os.Bundle)
+	 */
 	@Override
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
+		// GLOBAL VARS 
 		 _context = this;
 		 _appLayout = new LinearLayout(_context);
-		 _history = new HashMap<String, String>();
+		 _history =  getHistory();
+		 _getJoke = new GetJokeForm(_context, "Input First Name", "Input Last Name", "Get Chucked!", "Random Chuck!");
+
 		 
-		 _getJoke = new GetJokeForm(_context, "First Name", "Last Name", "Get Chucked!", "Get Chucked Randomly!");
-		
-		 // Add Get handler for personalization
+		 // Get handler for personalization
 		 
-//		 EditText firstName = _getJoke.getFirstName();
-//		 EditText lastName = _getJoke.getLastName();
 		 Button getButton = _getJoke.getButton();
-//		 Button randomButton = _getJoke.getRandom();
-		 
+
 		 getButton.setOnClickListener(new OnClickListener(){
 			 
 			@Override
 			public void onClick(View v) {
-				// TODO Auto-generated method stub
-//				Log.i("CLICK HANDLED",_getJoke.getFirstName().getText().toString() +" " + _getJoke.getLastName().getText().toString());
-				grabJoke(_getJoke.getFirstName().getText().toString(), _getJoke.getLastName().getText().toString());
+
+				grabJoke(_getJoke.getFirstName().getText().toString(), _getJoke.getLastName().getText().toString());	
 			}
 			 
 		 });
+		 
+		 // Random with no name 
+		 Button randomButton = _getJoke.getRandom();
+		 
+		 randomButton.setOnClickListener(new OnClickListener() {
+			
+			@Override
+			public void onClick(View v) {
+				// TODO Auto-generated method stub
+				grabJokeRandom();
+			}
+		});
+		 
 		
 		 // Detect NetConn
 		 
 		 _connected = NetworkConnection.getConnectionStatus(_context);
 		 if (_connected) {
 			Log.i("NETWORK CONNECTION", NetworkConnection.getConnectionType(_context));
+		} else{
+			
+			// AlertDialog if not connected
+            AlertDialog.Builder alert = new AlertDialog.Builder(_context);
+            alert.setTitle("Oops!");
+            alert.setMessage("Please Chuck, I mean check your network connection and try again.");
+            alert.setCancelable(false);
+            alert.setPositiveButton("Hiyah!", new DialogInterface.OnClickListener() {
+                @Override
+                public void onClick(DialogInterface dialogInterface, int i) {
+                    dialogInterface.cancel();
+                }
+            });
+            alert.show();
+
+            // Disable button
+            getButton.setClickable(false);
+            randomButton.setClickable(false);
+			
+
 		}
 		 
 		 
@@ -79,6 +127,9 @@ public class MainActivity extends Activity {
 		
 	}
 
+	/* (non-Javadoc)
+	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
+	 */
 	@Override
 	public boolean onCreateOptionsMenu(Menu menu) {
 		// Inflate the menu; this adds items to the action bar if it is present.
@@ -86,19 +137,36 @@ public class MainActivity extends Activity {
 		return true;
 	}
 
+	
+	/**
+	 * Gets the history.
+	 *
+	 * @return the history
+	 */
+	@SuppressWarnings("unchecked")
+	private HashMap<String, String> getHistory (){
+		Object stored = ReadWrite.readStringObject(_context, "history", false);
+		 
+		HashMap<String, String> history;
+		if (stored == null) {
+			Log.i("HISTORY", "NO HISTORY FILE FOUND");
+			history = new HashMap<String, String>();
+		} else {
+			history = (HashMap<String, String>) stored;
+		}
+		return history;
+	}
+	
+	/**
+	 * Grab joke.
+	 *
+	 * @param firstName the first name
+	 * @param lastName the last name
+	 */
 	private void grabJoke(String firstName, String lastName){
 		String baseURL = "http://api.icndb.com/jokes/random";
 		String nameQuery = "?firstName="+firstName+"&amp;lastName="+lastName+"";
-//		String qs;
-//		
-//		try {
-//			qs = URLEncoder.encode(nameQuery, "UTF-8");
-//			Log.i("URL", qs);
-//		} catch (Exception e) {
-//			// TODO: handle exception
-//			Log.e("BAD URL", "Encoding issue");
-//			qs = "";
-//		}
+
 		URL finalURL;
 		try {
 			finalURL = new URL(baseURL+nameQuery);
@@ -115,8 +183,32 @@ public class MainActivity extends Activity {
 		
 	}
 	
+	
+	private void grabJokeRandom(){
+		String baseURL = "http://api.icndb.com/jokes/random";
+		URL finalURL;
+		try {
+			finalURL = new URL(baseURL);
+			Log.i("FINAL URL", finalURL.toString());
+			JokeRequest jr = new JokeRequest();
+			jr.execute(finalURL);
+			
+			
+		} catch (MalformedURLException e) {
+			// TODO: handle exception
+			Log.e("URL ERROR", "ERROR");
+			finalURL = null;
+		}
+	}
+	
+	/**
+	 * The Class JokeRequest.
+	 */
 	private class JokeRequest extends AsyncTask<URL, Void, String>{
 
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#doInBackground(Params[])
+		 */
 		@Override
 		protected String doInBackground(URL... urls) {
 			String response = "";
@@ -126,6 +218,9 @@ public class MainActivity extends Activity {
 			return response;
 		}
 		
+		/* (non-Javadoc)
+		 * @see android.os.AsyncTask#onPostExecute(java.lang.Object)
+		 */
 		@Override
 		protected void onPostExecute(String result){
 			Log.i("URL RESPONSE", result);
@@ -135,7 +230,7 @@ public class MainActivity extends Activity {
 				JSONObject results = json.getJSONObject("value");
 				String joke = results.getString("joke");
 				String jokeId = results.getString("id");
-				Log.i("JSON RESULT", joke);
+				_joke.setJokeInGrid(joke);
 				_history.put(jokeId, joke);
 				ReadWrite.storeObjectFile(_context, "history", _history, false);
 				

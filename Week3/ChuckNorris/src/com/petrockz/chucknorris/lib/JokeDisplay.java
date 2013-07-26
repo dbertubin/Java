@@ -9,6 +9,7 @@ public class JokeDisplay extends GridLayout {
 	
 	TextView _joke;
 	Context _context;
+
 	
 	public JokeDisplay(Context context){
 		super(context);
@@ -23,9 +24,11 @@ public class JokeDisplay extends GridLayout {
 		
 		this.addView(jokeLabel);
 		this.addView(_joke);
-		
-		
+	
 	}
 	
-	
+	public void setJokeInGrid(String joke){
+		
+		_joke.setText(joke);
+	}
 }
