@@ -9,12 +9,15 @@ public class JokeDisplay extends GridLayout {
 	
 	TextView _joke;
 	Context _context;
+	GridLayout _grid;
 
 	
 	public JokeDisplay(Context context){
 		super(context);
 		
 		_context = context;
+		
+		_grid = this; 
 		
 		this.setColumnCount(2);
 		
@@ -30,5 +33,10 @@ public class JokeDisplay extends GridLayout {
 	public void setJokeInGrid(String joke){
 		
 		_joke.setText(joke);
+	}
+	
+	public GridLayout getGridLayout(){
+		
+		return _grid;
 	}
 }

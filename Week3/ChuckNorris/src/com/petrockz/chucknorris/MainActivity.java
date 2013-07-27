@@ -23,7 +23,11 @@ import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.GridLayout;
 import android.widget.LinearLayout;
+import android.widget.LinearLayout.LayoutParams;
+import android.widget.TextView;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -31,23 +35,16 @@ import android.widget.LinearLayout;
  */
 public class MainActivity extends Activity {
 
-	/** The _context. */
+	// GLOBAL VARS 
 	Context _context;
-	
-	/** The _app layout. */
 	LinearLayout _appLayout;
-	
-	/** The _get joke. */
 	GetJokeForm _getJoke;
-	
-	/** The _joke. */
 	JokeDisplay _joke;
-	
-	/** The _connected. */
 	Boolean _connected = false;
-	
-	/** The _history. */
 	HashMap<String, String> _history;
+	LayoutParams _lp;
+	GridLayout _grid;
+	TextView _header;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -56,19 +53,31 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		// GLOBAL VARS 
+		
 		 _context = this;
 		 _appLayout = new LinearLayout(_context);
 		 _history =  getHistory();
+		 _lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+		 
+		 
 		 _getJoke = new GetJokeForm(_context, "Input First Name", "Input Last Name", "Get Chucked!", "Random Chuck!");
-
+		 
+		 // HEADER 
+		 _header = new TextView(_context);
+		 _header.setText("Enter your first name and get Chucked! Or get Random!");
+		 _header.setLayoutParams(_lp);
+		 
+		 
+		 // FIRST NAME FIELD
+		 EditText nameField = _getJoke.getFirstName();
+		 nameField.setLayoutParams(_lp);
+		 		
 		 
 		 // Get handler for personalization
 		 
 		 Button getButton = _getJoke.getButton();
-
+		 getButton.setLayoutParams(_lp);	 
 		 getButton.setOnClickListener(new OnClickListener(){
-			 
 			@Override
 			public void onClick(View v) {
 
@@ -79,7 +88,7 @@ public class MainActivity extends Activity {
 		 
 		 // Random with no name 
 		 Button randomButton = _getJoke.getRandom();
-		 
+		 randomButton.setLayoutParams(_lp);
 		 randomButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -89,7 +98,7 @@ public class MainActivity extends Activity {
 			}
 		});
 		 
-		
+				 
 		 // Detect NetConn
 		 
 		 _connected = NetworkConnection.getConnectionStatus(_context);
@@ -119,7 +128,10 @@ public class MainActivity extends Activity {
 		 
 		 
 		 _joke = new JokeDisplay(_context);
+		 _joke.setLeft(0);
 		 
+		 
+		 _appLayout.addView(_header);
 		 _appLayout.addView(_getJoke);	 
 		 _appLayout.addView(_joke);
 		 _appLayout.setOrientation(LinearLayout.VERTICAL);
@@ -229,9 +241,10 @@ public class MainActivity extends Activity {
 				JSONObject json = new JSONObject(result);
 				JSONObject results = json.getJSONObject("value");
 				String joke = results.getString("joke");
+				String formattedJoke = joke.replaceAll("&quot;", "''");
 				String jokeId = results.getString("id");
-				_joke.setJokeInGrid(joke);
-				_history.put(jokeId, joke);
+				_joke.setJokeInGrid(formattedJoke);
+				_history.put(jokeId, formattedJoke);
 				ReadWrite.storeObjectFile(_context, "history", _history, false);
 				
 				// Nexus does not have an SD card so logic to check that would have to go here before trying to write to it. 
