@@ -37,16 +37,15 @@ public class MainActivity extends Activity {
 
 	// GLOBAL VARS 
 	Context _context;
-	LinearLayout _appLayout;
-	GetJokeForm _getJoke;
+
+//	GetJokeForm _getJoke;
 	JokeDisplay _joke;
 	Boolean _connected = false;
 	HashMap<String, String> _history;
-	LayoutParams _lp;
+//	LayoutParams _lp;
 	GridLayout _grid;
 	TextView _header;
-	String _formattedJoke;
-	String _jokeId;
+	EditText _nameField;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -55,42 +54,35 @@ public class MainActivity extends Activity {
 	protected void onCreate(Bundle savedInstanceState) {
 		super.onCreate(savedInstanceState);
 		
-		
+		// NOW USING THE LAYOUT XML
+		setContentView(R.layout.form);
 		 _context = this;
-		 _appLayout = new LinearLayout(_context);
 		 _history =  getHistory();
-		 _lp = new LinearLayout.LayoutParams(LinearLayout.LayoutParams.MATCH_PARENT,LinearLayout.LayoutParams.WRAP_CONTENT);
+
 		 
-		 
-		 _getJoke = new GetJokeForm(_context, "Input First Name", "Input Last Name", "Get Chucked!", "Random Chuck!");
-		 
-		 // HEADER 
-		 _header = new TextView(_context);
-		 _header.setText("Enter your first name and get Chucked! Or get Random!");
-		 _header.setLayoutParams(_lp);
+//		 // HEADER 
+//		 _header = new TextView(_context);
+//		 _header.setText(R.string.header_text);
 		 
 		 
 		 // FIRST NAME FIELD
-		 EditText nameField = _getJoke.getFirstName();
-		 nameField.setLayoutParams(_lp);
+		 _nameField = (EditText) findViewById(R.id._firstName);
 		 		
 		 
-		 // GET MANIPULATED JOKE
+		 // Get handler for personalization
 		 
-		 Button getButton = _getJoke.getButton();
-		 getButton.setLayoutParams(_lp);	 
+		 Button getButton = (Button) findViewById(R.id._getButton);
 		 getButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 
-				grabJoke(_getJoke.getFirstName().getText().toString(), _getJoke.getLastName().getText().toString());	
+				grabJoke(_nameField.getText().toString());	
 			}
 			 
 		 });
 		 
-		 // GET RANDOM JOKE
-		 Button randomButton = _getJoke.getRandom();
-		 randomButton.setLayoutParams(_lp);
+		 // Random with no name 
+		 Button randomButton = (Button)findViewById(R.id._getRandom);
 		 randomButton.setOnClickListener(new OnClickListener() {
 			
 			@Override
@@ -100,45 +92,15 @@ public class MainActivity extends Activity {
 			}
 		});
 		 
-		Button saveButton = new Button(_context);
-		saveButton.setText("Save Joke");
-		saveButton.setLayoutParams(_lp);
-		
-		saveButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				saveJoke();
-				
-			}
-		});
-		
-		Button getSavedButton = new Button(_context);
-		getSavedButton.setText("Get a Saved Joke");
-		getSavedButton.setLayoutParams(_lp);
-		
-		getSavedButton.setOnClickListener(new OnClickListener() {
-			
-			@Override
-			public void onClick(View v) {
-				getSavedJoke();
-				
-			}
-		});
-		
-		 
-		 // DETECT NETWORK CONNECTION 
+				 
+		 // Detect NetConn
 		 
 		 _connected = NetworkConnection.getConnectionStatus(_context);
 		 if (_connected) {
 			Log.i("NETWORK CONNECTION", NetworkConnection.getConnectionType(_context));
 		} else{
 			
-			// DISABLE BUTTONS
-            getButton.setClickable(false);
-            randomButton.setClickable(false);
-			
-			// ALERT DIALOG IF NOT CONNECTED 
+			// AlertDialog if not connected
             AlertDialog.Builder alert = new AlertDialog.Builder(_context);
             alert.setTitle("Oops!");
             alert.setMessage("Please Chuck, I mean check your network connection and try again.");
@@ -150,23 +112,27 @@ public class MainActivity extends Activity {
                 }
             });
             alert.show();
+
+            // Disable button
+            getButton.setClickable(false);
+            randomButton.setClickable(false);
+			
+
 		}
 		 
-		 // INSTANCIATE JOKE GRID 
-		 _joke = new JokeDisplay(_context);
-
 		 
-		 // ADD VIEWS TO LAYOUT 
-		 _appLayout.addView(_header);
-		 _appLayout.addView(_getJoke);	 
-		 _appLayout.addView(_joke);
-		 _appLayout.addView(saveButton);
-//	  	 _appLayout.addView(getSavedButton);
-		 _appLayout.setOrientation(LinearLayout.VERTICAL);
-		setContentView(_appLayout);
-		
+//		 _joke = new JokeDisplay(_context);
+//		 _joke.setLeft(0);
+//		 
+//	
 	}
 
+	
+	
+	
+	
+	
+	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
@@ -203,9 +169,9 @@ public class MainActivity extends Activity {
 	 * @param firstName the first name
 	 * @param lastName the last name
 	 */
-	private void grabJoke(String firstName, String lastName){
+	private void grabJoke(String firstName){
 		String baseURL = "http://api.icndb.com/jokes/random";
-		String nameQuery = "?firstName="+firstName+"&amp;lastName="+lastName+"";
+		String nameQuery = "?firstName="+firstName+"&amp;lastName=";
 
 		URL finalURL;
 		try {
@@ -269,11 +235,11 @@ public class MainActivity extends Activity {
 				JSONObject json = new JSONObject(result);
 				JSONObject results = json.getJSONObject("value");
 				String joke = results.getString("joke");
-				String _formattedJoke = joke.replaceAll("&quot;", "''");
-				String _jokeId = results.getString("id");
-				_joke.setJokeInGrid(_formattedJoke);
-//				_history.put(_jokeId, _formattedJoke);
-//				ReadWrite.storeObjectFile(_context, "history", _history, false);
+				String formattedJoke = joke.replaceAll("&quot;", "''");
+				String jokeId = results.getString("id");
+				_joke.setJokeInGrid(formattedJoke);
+				_history.put(jokeId, formattedJoke);
+				ReadWrite.storeObjectFile(_context, "history", _history, false);
 				
 				// Nexus does not have an SD card so logic to check that would have to go here before trying to write to it. 
 //				ReadWrite.storeStringFile(_context, "temp", result.toString(),true);
@@ -286,21 +252,5 @@ public class MainActivity extends Activity {
 		}
 		
 	}
-	
-	public void saveJoke(){
-		_joke.setJokeInGrid(_formattedJoke);
-		_history.put(_jokeId,_formattedJoke);
-		ReadWrite.storeObjectFile(_context, "history", _history, false);
-		Log.i("SAVED JOKE", "Saved");
-	}
-	
-	public void getSavedJoke(){
-		ReadWrite.readStringObject(_context, "history", false);
-		
-		
-		_joke.setJokeInGrid(_formattedJoke);
-		System.out.println(_formattedJoke);
-	}
-	
 	
 }
