@@ -26,10 +26,27 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/get_random"/>
-        
-
-        
-        
     </LinearLayout>
 
+    
+    <GridLayout 
+        android:id="@+id/jokeDisplay"
+        android:layout_width="wrap_content"
+        android:layout_height="0dp"
+        android:layout_weight=".5"
+        android:columnCount="2">
+        
+        <TextView 
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="@string/joke"/>
+        <TextView 
+            android:id="@+id/joke"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            />
+        
+        
+    </GridLayout>
+    
 </LinearLayout>

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.petrockz.chucknorris.lib.GetJokeForm;
 import com.petrockz.chucknorris.lib.JokeDisplay;
 import com.petrockz.chucknorris.lib.NetworkConnection;
 import com.petrockz.chucknorris.lib.ReadWrite;
@@ -25,8 +24,6 @@ import android.view.View.OnClickListener;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
-import android.widget.LinearLayout;
-import android.widget.LinearLayout.LayoutParams;
 import android.widget.TextView;
 
 // TODO: Auto-generated Javadoc
@@ -38,14 +35,15 @@ public class MainActivity extends Activity {
 	// GLOBAL VARS 
 	Context _context;
 
-//	GetJokeForm _getJoke;
-	JokeDisplay _joke;
+
+	
 	Boolean _connected = false;
 	HashMap<String, String> _history;
 //	LayoutParams _lp;
 	GridLayout _grid;
 	TextView _header;
 	EditText _nameField;
+	TextView _joke;
 	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
@@ -237,7 +235,8 @@ public class MainActivity extends Activity {
 				String joke = results.getString("joke");
 				String formattedJoke = joke.replaceAll("&quot;", "''");
 				String jokeId = results.getString("id");
-				_joke.setJokeInGrid(formattedJoke);
+				_joke = (TextView)findViewById(R.id.joke);
+				_joke.setText(formattedJoke);
 				_history.put(jokeId, formattedJoke);
 				ReadWrite.storeObjectFile(_context, "history", _history, false);
 				

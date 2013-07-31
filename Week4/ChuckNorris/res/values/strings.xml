@@ -8,5 +8,6 @@
     <string name="enter_first_name">Enter First Name</string>
     <string name="get_random">Get Random</string>
     <string name="header_text">Enter your first name and get Chucked! Or get Random!</string>
+    <string name="joke">Joke:</string>
 
 </resources>
