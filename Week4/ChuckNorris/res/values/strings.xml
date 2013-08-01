@@ -7,7 +7,8 @@
     <string name="get_chucked">Get Chucked!</string>
     <string name="enter_first_name">Enter First Name</string>
     <string name="get_random">Get Random</string>
-    <string name="header_text">Enter your first name and get Chucked! Or get Random!</string>
+    <string name="header_text">Choose either button below to get a Joke</string>
     <string name="joke">Joke:</string>
+    <string name="save_to_favorites">Show History</string>
 
 </resources>

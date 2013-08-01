@@ -7,49 +7,46 @@
     <LinearLayout 
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:orientation="horizontal">
+        android:orientation="vertical">
+        
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:text="@string/header_text"
+            style="@style/HeaderText"
+            />
+        
         <EditText 
             android:id="@+id/_firstName"
-            android:layout_width="0dp"
-            android:layout_weight="1"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:hint="@string/enter_first_name"/>
-        
+            android:hint="@string/enter_first_name"
+            style="@style/ExitText"/>
+                
         <Button 
             android:id="@+id/_getButton"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/get_chucked"/>
         
         <Button 
             android:id="@+id/_getRandom"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:text="@string/get_random"/>
-    </LinearLayout>
+            
 
-    
-    <GridLayout 
-        android:id="@+id/jokeDisplay"
-        android:layout_width="wrap_content"
-        android:layout_height="0dp"
-        android:layout_weight=".5"
-        android:columnCount="2"
-        android:padding="10dp">
-        
-        <TextView 
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:text="@string/joke"
-            style="@style/JokeLabel"/>
-        	
         <TextView 
             android:id="@+id/joke"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            style="@style/JokeText"/>
+            style="@style/JokeText"
+            />
         
-        
-    </GridLayout>
+    </LinearLayout>
+
+
+
+
     
 </LinearLayout>

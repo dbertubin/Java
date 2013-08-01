@@ -34,30 +34,19 @@ public class GetJokeForm extends LinearLayout{
 		fnlp = new LinearLayout.LayoutParams(0,LinearLayout.LayoutParams.MATCH_PARENT,1.0f);
 		_firstName.setHint(hintFirst);
 		
-		
-		//second Name field
-		_lastName = new EditText(context);
-		
-		_lastName.setHint(hintLast);
-		
+	
 		//Chuck Button
 		_getButton = new Button(context);
 	
-//		_getButton.setText(getButtonText);
 		
 		// Random Button
 		_randomButton = new Button(context);
 		_randomButton.setText(randomButtonText);
 		
-//		this.setLayoutParams(lp);
-		
-		_ll = new LinearLayout(context);
-		
+		_ll = new LinearLayout(context);	
 		_ll.addView(_firstName);
-//		_ll.addView(_lastName);
 		_ll.setLayoutParams(lp);
 		this.addView(_ll);
-		
 		this.addView(_getButton);
 		this.addView(_randomButton);
 		this.setOrientation(VERTICAL);

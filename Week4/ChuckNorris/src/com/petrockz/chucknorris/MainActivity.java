@@ -2,12 +2,10 @@ package com.petrockz.chucknorris;
 
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-
+import java.util.ArrayList;
 import org.json.JSONException;
 import org.json.JSONObject;
 
-import com.petrockz.chucknorris.lib.JokeDisplay;
 import com.petrockz.chucknorris.lib.NetworkConnection;
 import com.petrockz.chucknorris.lib.ReadWrite;
 
@@ -21,10 +19,12 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.View;
 import android.view.View.OnClickListener;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.GridLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 // TODO: Auto-generated Javadoc
 /**
@@ -34,12 +34,8 @@ public class MainActivity extends Activity {
 
 	// GLOBAL VARS 
 	Context _context;
-
-
-	
 	Boolean _connected = false;
-	HashMap<String, String> _history;
-//	LayoutParams _lp;
+	ArrayList<String> _history;
 	GridLayout _grid;
 	TextView _header;
 	EditText _nameField;
@@ -56,30 +52,35 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.form);
 		 _context = this;
 		 _history =  getHistory();
-
-		 
-//		 // HEADER 
-//		 _header = new TextView(_context);
-//		 _header.setText(R.string.header_text);
-		 
-		 
+		
 		 // FIRST NAME FIELD
 		 _nameField = (EditText) findViewById(R.id._firstName);
-		 		
-		 
-		 // Get handler for personalization
-		 
+		 	 
+		 // CUSTOM HANDLER 
 		 Button getButton = (Button) findViewById(R.id._getButton);
 		 getButton.setOnClickListener(new OnClickListener(){
 			@Override
 			public void onClick(View v) {
 
-				grabJoke(_nameField.getText().toString());	
+				if (_nameField.length()!= 0) {
+					grabJoke(_nameField.getText().toString());
+					
+					// DISMISSES KEYBOARD on CLICK 
+					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+					imm.hideSoftInputFromWindow(_nameField.getWindowToken(), 0);	
+					
+				} else {
+				
+				// ALERTS USER TO INPUT A VALUE 	
+				Toast alertToast = Toast.makeText(_context, "You must enter a name to use this button!", Toast.LENGTH_SHORT);	
+				alertToast.show();
+				
+				}
 			}
 			 
 		 });
 		 
-		 // Random with no name 
+		 // RANDOM BUTTON HANDLER
 		 Button randomButton = (Button)findViewById(R.id._getRandom);
 		 randomButton.setOnClickListener(new OnClickListener() {
 			
@@ -90,9 +91,18 @@ public class MainActivity extends Activity {
 			}
 		});
 		 
-				 
-		 // Detect NetConn
-		 
+//		// SAVE BUTTON HANDLER 
+//		Button saveButton = (Button)findViewById(R.id._saveFav);
+//		saveButton.setOnClickListener(new OnClickListener() {
+//			
+//			@Override
+//			public void onClick(View v) {
+//				
+//				
+//			}
+//		});
+	
+		 // DETECT NETWORK CONNECTION
 		 _connected = NetworkConnection.getConnectionStatus(_context);
 		 if (_connected) {
 			Log.i("NETWORK CONNECTION", NetworkConnection.getConnectionType(_context));
@@ -111,26 +121,12 @@ public class MainActivity extends Activity {
             });
             alert.show();
 
-            // Disable button
+            // DISABLE BUTTONS 
             getButton.setClickable(false);
             randomButton.setClickable(false);
-			
-
-		}
-		 
-		 
-//		 _joke = new JokeDisplay(_context);
-//		 _joke.setLeft(0);
-//		 
-//	
+		}		 
 	}
 
-	
-	
-	
-	
-	
-	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
 	 */
@@ -148,15 +144,15 @@ public class MainActivity extends Activity {
 	 * @return the history
 	 */
 	@SuppressWarnings("unchecked")
-	private HashMap<String, String> getHistory (){
-		Object stored = ReadWrite.readStringObject(_context, "history", false);
+	private ArrayList<String> getHistory (){
+		Object stored = ReadWrite.readStringObject(_context, "history1", false);
 		 
-		HashMap<String, String> history;
+		ArrayList<String> history;
 		if (stored == null) {
 			Log.i("HISTORY", "NO HISTORY FILE FOUND");
-			history = new HashMap<String, String>();
+			history = new ArrayList<String>();
 		} else {
-			history = (HashMap<String, String>) stored;
+			history = (ArrayList<String>) stored;
 		}
 		return history;
 	}
@@ -234,11 +230,10 @@ public class MainActivity extends Activity {
 				JSONObject results = json.getJSONObject("value");
 				String joke = results.getString("joke");
 				String formattedJoke = joke.replaceAll("&quot;", "''");
-				String jokeId = results.getString("id");
 				_joke = (TextView)findViewById(R.id.joke);
 				_joke.setText(formattedJoke);
-				_history.put(jokeId, formattedJoke);
-				ReadWrite.storeObjectFile(_context, "history", _history, false);
+				_history.add(formattedJoke);
+				ReadWrite.storeObjectFile(_context, "history1", _history, false);
 				
 				// Nexus does not have an SD card so logic to check that would have to go here before trying to write to it. 
 //				ReadWrite.storeStringFile(_context, "temp", result.toString(),true);

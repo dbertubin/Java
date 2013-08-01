@@ -20,16 +20,28 @@
     
     <style name= "JokeLabel">
         <item name= "android:textStyle">normal</item>
-        <item name=	"android:textColor">@android:color/holo_blue_light</item>
+        <item name=	"android:textColor">@android:color/holo_blue_dark</item>
         <item name= "android:textSize">18sp</item>
     </style>
     
     <style name= "JokeText">
         <item name= "android:textStyle">normal</item>
-        <item name=	"android:textColor">@android:color/holo_blue_light</item>
+        <item name=	"android:textColor">@android:color/holo_blue_dark</item>
         <item name= "android:textSize">18sp</item>
         <item name= "android:padding">18dp</item>
-        
     </style>
+    
+    <style name= "HeaderText">
+        <item name= "android:textStyle">normal</item>
+        <item name=	"android:textColor">@android:color/holo_blue_dark</item>
+        <item name= "android:textSize">18sp</item>
+        <item name= "android:padding">18dp</item>
+    </style>
+    
+    <style name= "ExitText">
+        <item name= "android:paddingBottom">18dp</item>
+    </style>
+    
+    
 
 </resources>

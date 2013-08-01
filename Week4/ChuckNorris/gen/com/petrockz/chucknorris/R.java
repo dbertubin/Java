@@ -27,9 +27,8 @@ public final class R {
         public static final int _firstName=0x7f080000;
         public static final int _getButton=0x7f080001;
         public static final int _getRandom=0x7f080002;
-        public static final int action_settings=0x7f080005;
-        public static final int joke=0x7f080004;
-        public static final int jokeDisplay=0x7f080003;
+        public static final int action_settings=0x7f080004;
+        public static final int joke=0x7f080003;
     }
     public static final class layout {
         public static final int form=0x7f030000;
@@ -46,6 +45,7 @@ public final class R {
         public static final int header_text=0x7f050006;
         public static final int hello_world=0x7f050002;
         public static final int joke=0x7f050007;
+        public static final int save_to_favorites=0x7f050008;
     }
     public static final class style {
         /** 
@@ -74,6 +74,8 @@ public final class R {
  All customizations that are NOT specific to a particular API-level can go here. 
          */
         public static final int AppTheme=0x7f060001;
+        public static final int ExitText=0x7f060005;
+        public static final int HeaderText=0x7f060004;
         public static final int JokeLabel=0x7f060002;
         public static final int JokeText=0x7f060003;
     }
