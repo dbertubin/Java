@@ -55,11 +55,6 @@ public class MainActivity extends Activity {
 		 _context = this;
 		 _history =  getHistory();
 		 
-		 
-//		 Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
-//
-//		 ImageView iv = (ImageView) findViewById(R.id.image);
-//		 iv.setImageBitmap(bitmap);
 		
 		 // FIRST NAME FIELD
 		 _nameField = (EditText) findViewById(R.id._firstName);
@@ -256,6 +251,7 @@ public class MainActivity extends Activity {
 				_joke.setText(formattedJoke);
 				_history.add(formattedJoke);
 				ReadWrite.storeObjectFile(_context, "historyArray", _history, false);
+				Log.i("ARRAYLIST WRITTEN", _history.toString());
 				
 				// Nexus does not have an SD card so logic to check that would have to go here before trying to write to it. 
 //				ReadWrite.storeStringFile(_context, "temp", result.toString(),true);
