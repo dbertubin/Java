@@ -21,7 +21,7 @@ public class HistoryList extends Activity {
 	public void onCreate(Bundle savedInstanceState) {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.listview);
-	    _history = getHistory();		
+//	    _history = getHistory();		
 //		_listView = (ListView) findViewById(R.id.listview);
 //		ArrayAdapter<String> arrayAdapter =      
 //		new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, _arrayList);

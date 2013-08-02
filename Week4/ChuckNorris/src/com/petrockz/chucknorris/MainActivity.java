@@ -169,7 +169,6 @@ public class MainActivity extends Activity {
 	@SuppressWarnings("unchecked")
 	private ArrayList<String> getHistory (){
 		Object stored = ReadWrite.readStringObject(_context, "historyArray", false);
-
 		ArrayList<String> history;
 		if (stored == null) {
 			Log.i("HISTORY", "NO HISTORY FILE FOUND");
