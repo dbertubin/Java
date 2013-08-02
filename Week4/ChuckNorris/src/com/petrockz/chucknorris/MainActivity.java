@@ -15,6 +15,7 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.Context;
 import android.content.DialogInterface;
+import android.content.Intent;
 import android.util.Log;
 import android.view.Menu;
 import android.view.View;
@@ -41,6 +42,7 @@ public class MainActivity extends Activity {
 	EditText _nameField;
 	TextView _joke;
 	
+	
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreate(android.os.Bundle)
 	 */
@@ -52,6 +54,12 @@ public class MainActivity extends Activity {
 		setContentView(R.layout.form);
 		 _context = this;
 		 _history =  getHistory();
+		 
+		 
+//		 Bitmap bitmap = Bitmap.createBitmap(100, 100, Bitmap.Config.ARGB_8888);
+//
+//		 ImageView iv = (ImageView) findViewById(R.id.image);
+//		 iv.setImageBitmap(bitmap);
 		
 		 // FIRST NAME FIELD
 		 _nameField = (EditText) findViewById(R.id._firstName);
@@ -62,20 +70,24 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 
-				if (_nameField.length()!= 0) {
-					grabJoke(_nameField.getText().toString());
-					
-					// DISMISSES KEYBOARD on CLICK 
-					InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-					imm.hideSoftInputFromWindow(_nameField.getWindowToken(), 0);	
-					
-				} else {
-				
-				// ALERTS USER TO INPUT A VALUE 	
-				Toast alertToast = Toast.makeText(_context, "You must enter a name to use this button!", Toast.LENGTH_SHORT);	
-				alertToast.show();
-				
-				}
+				netCon();
+				if (_connected) {
+		
+					if (_nameField.length()!= 0) {
+						grabJoke(_nameField.getText().toString());
+						
+						// DISMISSES KEYBOARD on CLICK 
+						InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+						imm.hideSoftInputFromWindow(_nameField.getWindowToken(), 0);	
+						
+						
+					} else {
+						// ALERTS USER TO INPUT A VALUE 	
+						Toast alertToast = Toast.makeText(_context, "You must enter a name to use this button!", Toast.LENGTH_SHORT);	
+						alertToast.show();
+						
+						}
+				} 
 			}
 			 
 		 });
@@ -87,45 +99,56 @@ public class MainActivity extends Activity {
 			@Override
 			public void onClick(View v) {
 				// TODO Auto-generated method stub
-				grabJokeRandom();
+				
+				netCon();
+				if (_connected){
+					grabJokeRandom();
+				};
 			}
 		});
 		 
-//		// SAVE BUTTON HANDLER 
-//		Button saveButton = (Button)findViewById(R.id._saveFav);
-//		saveButton.setOnClickListener(new OnClickListener() {
-//			
-//			@Override
-//			public void onClick(View v) {
-//				
-//				
-//			}
-//		});
-	
-		 // DETECT NETWORK CONNECTION
-		 _connected = NetworkConnection.getConnectionStatus(_context);
-		 if (_connected) {
-			Log.i("NETWORK CONNECTION", NetworkConnection.getConnectionType(_context));
-		} else{
+		// SAVE BUTTON HANDLER 
+		Button saveButton = (Button)findViewById(R.id._history);
+		saveButton.setOnClickListener(new OnClickListener() {
 			
-			// AlertDialog if not connected
-            AlertDialog.Builder alert = new AlertDialog.Builder(_context);
-            alert.setTitle("Oops!");
-            alert.setMessage("Please Chuck, I mean check your network connection and try again.");
-            alert.setCancelable(false);
-            alert.setPositiveButton("Hiyah!", new DialogInterface.OnClickListener() {
-                @Override
-                public void onClick(DialogInterface dialogInterface, int i) {
-                    dialogInterface.cancel();
-                }
-            });
-            alert.show();
-
-            // DISABLE BUTTONS 
-            getButton.setClickable(false);
-            randomButton.setClickable(false);
-		}		 
+			@Override
+			public void onClick(View v) {
+				Intent intent = new Intent(v.getContext(),HistoryList.class);
+				startActivityForResult(intent, 0);
+			}
+		});
+	
 	}
+	
+	 // DETECT NETWORK CONNECTION
+	
+	private void netCon(){
+	
+	 _connected = NetworkConnection.getConnectionStatus(_context);
+	 if (_connected) {
+		Log.i("NETWORK CONNECTION", NetworkConnection.getConnectionType(_context));
+		
+	} else{
+		
+		// AlertDialog if not connected
+       AlertDialog.Builder alert = new AlertDialog.Builder(_context);
+       alert.setTitle("Oops!");
+       alert.setMessage("Please Chuck, I mean check your network connection and try again.");
+       alert.setCancelable(false);
+       alert.setPositiveButton("Hiyah!", new DialogInterface.OnClickListener() {
+           @Override
+           public void onClick(DialogInterface dialogInterface, int i) {
+               dialogInterface.cancel();
+           }
+       });
+       alert.show();
+
+       // DISABLE BUTTONS 
+//       getButton.setClickable(false);
+//       randomButton.setClickable(false);
+	}		 
+}
+	
 
 	/* (non-Javadoc)
 	 * @see android.app.Activity#onCreateOptionsMenu(android.view.Menu)
@@ -145,8 +168,8 @@ public class MainActivity extends Activity {
 	 */
 	@SuppressWarnings("unchecked")
 	private ArrayList<String> getHistory (){
-		Object stored = ReadWrite.readStringObject(_context, "history1", false);
-		 
+		Object stored = ReadWrite.readStringObject(_context, "historyArray", false);
+
 		ArrayList<String> history;
 		if (stored == null) {
 			Log.i("HISTORY", "NO HISTORY FILE FOUND");
@@ -233,7 +256,7 @@ public class MainActivity extends Activity {
 				_joke = (TextView)findViewById(R.id.joke);
 				_joke.setText(formattedJoke);
 				_history.add(formattedJoke);
-				ReadWrite.storeObjectFile(_context, "history1", _history, false);
+				ReadWrite.storeObjectFile(_context, "historyArray", _history, false);
 				
 				// Nexus does not have an SD card so logic to check that would have to go here before trying to write to it. 
 //				ReadWrite.storeStringFile(_context, "temp", result.toString(),true);

@@ -10,5 +10,7 @@
     <string name="header_text">Choose either button below to get a Joke</string>
     <string name="joke">Joke:</string>
     <string name="save_to_favorites">Show History</string>
+    <string name="dismiss">Dismiss</string>
+    <string name="image">image</string>
 
 </resources>
