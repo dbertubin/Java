@@ -1,6 +1,8 @@
 package com.petrockz.chucknorris;
 
 import java.util.ArrayList;
+import java.util.Collections;
+
 import com.petrockz.chucknorris.lib.ReadWrite;
 
 import android.app.Activity;
@@ -22,7 +24,8 @@ public class HistoryList extends Activity {
 	    super.onCreate(savedInstanceState);
 	    setContentView(R.layout.listview);
 	    _context = this;
-	    _history = getHistory();		
+	    _history = getHistory();
+	    Collections.reverse(_history);
 		_listView = (ListView) findViewById(R.id.listview);
 		ArrayAdapter<String> arrayAdapter =      
 		new ArrayAdapter<String>(this,android.R.layout.simple_list_item_1, _history);
